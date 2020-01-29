@@ -12,7 +12,7 @@
   <body>
 
 
-  @if( Auth::user()->role === App\User::ROLE_MANAGE_OF_PRODUCTION )
+  @if( Auth::user()->role === App\User::ROLE_SHOPPER )
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
   <a class="navbar-brand" href="/">Small</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,7 +22,7 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link "  href="{{ route('manageOfProduction.index')}}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link "  href="{{ route('shopper.index')}}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item ">
           <a class="nav-link" href="{{ route('logout') }}" 
@@ -41,7 +41,6 @@
 </nav><br><br>
 <main role="main">
   <section class="jumbotron text-center">
-    <div class="container">
       <h1 class="jumbotron-heading"></h1>
   </section>
 </main>

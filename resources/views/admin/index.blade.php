@@ -42,7 +42,7 @@
                                         
                                         <div class="container">
                                             <label for="">Кому</label>
-                                            <select name="shopper" class="form-control" >
+                                            <select name="shopper_id" class="form-control" >
                                             @foreach($shoppers as  $shopper )
                                             <option value="{{$shopper->id}}">{{$shopper->name}}</option>
                                             @endforeach</select>
@@ -67,7 +67,14 @@
             <div>
                 <a href="{{ route('order.index')}}">
                     <button class="btn btn-primary">
-                        Просмотр
+                        Активные
+                    </button>
+                </a>
+            </div><br><br>
+            <div>
+                <a href="{{ route('order.indexReady')}}">
+                    <button class="btn btn-secondary">
+                        Готовые
                     </button>
                 </a>
             </div>

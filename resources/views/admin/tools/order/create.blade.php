@@ -1,7 +1,7 @@
 @extends('admin.layouts.app_admin')
 @section('content')
 {{$request}}
-<div class="container">
+<div class="container" style=" border: 4px solid grey;">
     <div class="container">
         <form  class="needs-validation" action="{{route('admin.order.create')}}" method="get">
         @csrf
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-6 mb-6">
                 <label for="validationCustom02"><h3>Кол-во</h3></label>
-                <input type="text" class="form-control" name="amount{{$i}}" placeholder="Кол-во" required>
+                <input type="number" min="10" class="form-control" name="amount{{$i}}" placeholder="Кол-во" required>
                 </div>
             </div>
             <hr>

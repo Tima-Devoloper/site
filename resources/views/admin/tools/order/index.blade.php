@@ -19,7 +19,7 @@
                     @foreach($orders as $order)
                     <tr>
                     <th scope="row">{{++$i}}</th>
-                    <td>{{$shopper::where('id',$order->shopper)->first()->name}}</td>
+                    <td>{{$shopper::where('id',$order->shopper_id)->first()->name}}</td>
                     <td>{{ date("d.m.Y H:i", strtotime($order->delivery_date))}}</td>
                     <td>
                     

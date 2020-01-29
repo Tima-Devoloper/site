@@ -59,6 +59,37 @@ class subOrderController extends Controller
 
         return redirect()->route('admin.index');
     }
+    
+
+    public function storeShopper(Request $request)
+    {
+
+        
+        for($i=0; $i< $request->summ ; $i++)
+        {
+            $number = '1000' + $i;
+            print_r($number);
+            SubOrder::create([
+                'order_number' => $request->order_number,
+                'position_id'  => $request->$i , //Свойство от 0 до 1000 являюстся свойствами position_id 
+                'number'       => $request->$number,// Свойства от 1000 и дальше являются свойствами number
+            ]); 
+
+        }
+
+        // Здесь мы меняем поле free  Order-а к которомы мы привязоны на \App\Order::STATUS_DONE
+        //  чтобы в дальнейшем к нему не могли другие привязаться
+        \App\Order::where('id',$request->order_number)->update([
+            'free' => \App\Order::STATUS_DONE,
+        ]);
+        
+        $orderMailShopper = \App\Order::where('id',$request->order_number)->first();
+
+        \App\Http\Controllers\mailController::send_form_shopper($orderMailShopper);
+
+        return redirect()->route('shopper.index');
+    }
+    
 
     /**
      * Display the specified resource.
@@ -118,6 +149,33 @@ class subOrderController extends Controller
         $subOrder::where('id',$request->id)->update([
             'orders_made' => $request->orders_made,
         ]);
+        
+        $subOrderThis = $subOrder::where('id',$request->id)->first();
+
+        $subOrdersGroupByOrderNumber = $subOrder::where('order_number', $subOrderThis->order_number)->get();
+
+        $number    = 0;
+        $orderMade = 0;
+
+        foreach($subOrdersGroupByOrderNumber as $s_Order)
+        {
+            $number += $s_Order->number;
+            $orderMade += $s_Order->orders_made;
+
+        }
+
+        echo $number , ' нужно сделать ' , $orderMade , ' сделано' ;
+        
+        if($number <= $orderMade)
+        {
+            \App\Order::where('id', $subOrderThis->order_number )->update([
+                'status' => \App\Order::STATUS_DONE 
+                ]);
+
+        }else
+        {
+            $i = 0;
+        }
 
         return redirect()->route('manageOfProduction.index');
     }

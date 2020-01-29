@@ -15,9 +15,58 @@ class orderController extends Controller
      */
     public function index()
     {
+        $orders = Order::where('status', Order::STATUS_ACTIVE)->orderBy('delivery_date', 'asc')->get();
+        foreach($orders as $order)
+        {
+            $subOrdersGroupByOrderNumber = \App\SubOrder::where('order_number', $order->id)->get();
+    
+            $number    = 0;
+            $orderMade = 0;
+    
+            foreach($subOrdersGroupByOrderNumber as $s_Order)
+            {
+                $number += $s_Order->number;
+                $orderMade += $s_Order->orders_made;
+    
+            }
+    
+            echo $number , ' нужно сделать ' , $orderMade , ' сделано' ;
+            
+            if($number <= $orderMade)
+            {
+                \App\Order::where('id', $order->id )->update([
+                    'status' => \App\Order::STATUS_DONE 
+                    ]);
+    
+            }else
+            {
+                $i = 0;
+            }
+
+        };
+
+        $orders = Order::where('status', Order::STATUS_ACTIVE)->orderBy('delivery_date', 'asc')->get();
+
+        
         $shopper = new \App\Shoppper;
         return view('admin.tools.order.index',[
-            'orders'   => Order::where('status', Order::STATUS_ACTIVE)->orderBy('delivery_date', 'asc')->get(),
+            'orders'   => $orders,
+            'shopper'  => $shopper,
+        ]
+    );
+    }
+
+
+
+    public function indexReady()
+    {
+
+        $orders = Order::where('status', Order::STATUS_DONE)->orderBy('delivery_date', 'asc')->get();
+
+        
+        $shopper = new \App\Shoppper;
+        return view('admin.tools.order.index',[
+            'orders'   => $orders,
             'shopper'  => $shopper,
         ]
     );
@@ -42,14 +91,36 @@ class orderController extends Controller
     public function store(Request $request)
     {
         
-        Order::create($request->all()
-    );
-    $order = Order::where('shopper',$request->shopper)->where('free',Order::STATUS_ACTIVE )->where('delivery_date', $request->delivery_date)->where('status',Order::STATUS_ACTIVE)->first();
+        Order::create( $request->all() );
+       
+        $order = Order::where('shopper_id',$request->shopper_id)->where('free',Order::STATUS_ACTIVE )->where('delivery_date', $request->delivery_date)->where('status',Order::STATUS_ACTIVE)->first();
+       
         return view('admin.tools.subOrder.create',[
             'request'  => $request,
             'position' => PositionName::all(),
             'order'    => $order,
         ]);
+    }
+
+    //Store для Shopper
+
+    public function storeShopper(Request $request)
+    {
+        $shopperId = \App\Shoppper::where('user_id',$request->shopper_id)->first();
+        
+        Order::create([
+            'shopper_id'     => $shopperId->id,
+            'delivery_date'  => $request->delivery_date,
+        ]);
+        $order = Order::where('shopper_id',$shopperId->id)->where('free',Order::STATUS_ACTIVE )->where('delivery_date', $request->delivery_date)->where('status',Order::STATUS_ACTIVE)->first();
+
+
+        return view('shopper.tools.subOrder.create',[
+            'request'  => $request,
+            'position' => PositionName::all(),
+            'order'    => $order,
+        ]);
+
     }
 
     /**
@@ -61,6 +132,18 @@ class orderController extends Controller
     public function show(Order $order)
     {
         return view('admin.tools.order.show',
+            [
+                'order'     => $order,
+                'subOrders' =>  \App\SubOrder::where('order_number' , $order->id)->get(),
+                'positions' => new \App\PositionName,
+            ]
+        );
+    }
+
+
+    public function showShopper(Order $order)
+    {
+        return view('shopper.tools.order.show',
             [
                 'order'     => $order,
                 'subOrders' =>  \App\SubOrder::where('order_number' , $order->id)->get(),

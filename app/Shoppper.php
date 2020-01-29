@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Shoppper extends Model
 {
     protected $fillable = [
-        'name', 'adress',
+        'name', 'adress','user_id',
     ];
 }

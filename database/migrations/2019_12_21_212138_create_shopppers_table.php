@@ -16,6 +16,7 @@ class CreateShopppersTable extends Migration
         Schema::create('shopppers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('name');
+            $table->integer('user_id');
             $table->text('adress');
             $table->timestamps();
         });

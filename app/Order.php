@@ -11,7 +11,7 @@ class Order extends Model
     use Notifiable;
     
     protected $fillable = [
-        'delivery_date', 'shopper',
+        'delivery_date', 'shopper_id',
     ];
 
     const STATUS_ACTIVE = 1;

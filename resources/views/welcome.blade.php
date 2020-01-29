@@ -79,7 +79,7 @@
                 </div>
             @endif
             <div class="container">
-                <img src='{{asset("images/ElimAi logo.jpg")}}' class="img-fluid" alt="Адаптивные изображения">
+                <img src='{{asset("images/ElimAi logo.jpg")}}'  style="width:100%" class="img-fluid" alt="Адаптивные изображения">
             </div>
         </div>
     </body>

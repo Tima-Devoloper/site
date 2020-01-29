@@ -1,6 +1,6 @@
 @extends('admin.layouts.app_admin')
 @section('content')
-<div class="container">
+<div class="container" style=" border: 4px solid grey;">
     <div class="container">
         <form  class="needs-validation" action="{{ route('subOrder.store')}}" method="post">
         @csrf
@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-md-6 mb-6">
                 <label for="validationCustom02"><h3>Кол-во</h3></label>
-                <input type="" class="form-control" name="{{1000+ $i}}" placeholder="Кол-во" required>
+                <input type="number" min="1" class="form-control" name="{{1000+ $i}}" placeholder="Кол-во" required>
                 </div>
             </div>
             <hr>
@@ -30,6 +30,7 @@
 
         <input type="submit" class="btn btn-primary" value="отправить">
         </form>
+        <br>
     </div>
 </div>
 @endsection

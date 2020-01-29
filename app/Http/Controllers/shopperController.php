@@ -24,7 +24,9 @@ class shopperController extends Controller
      */
     public function create()
     {
-        return view('admin.tools.shopper.create');
+        return view('admin.tools.shopper.create',[
+            'userShoppers'  => \App\User::where('role' , \App\User::ROLE_SHOPPER)->get(),
+        ]);
     }
 
     /**
@@ -35,7 +37,11 @@ class shopperController extends Controller
      */
     public function store(Request $request)
     {
-        Shoppper::create($request->all());
+        Shoppper::create([
+            'name'    =>  \App\User::where( 'id' , $request->user_id)->first()->name,
+            'user_id' =>  $request->user_id,
+            'adress'  =>  $request->adress,
+        ]);
 
         return redirect()->route('admin.index');
         

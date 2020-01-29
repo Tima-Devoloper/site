@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('shopper');
+            $table->integer('shopper_id');
             $table->integer('free')->default(Order::STATUS_ACTIVE);
             $table->text('delivery_date');
             $table->integer('status')->default(Order::STATUS_ACTIVE);
