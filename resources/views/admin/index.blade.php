@@ -51,7 +51,7 @@
 
                                         <div class="container">
                                             <label for="inputDate">Дата поставки</label>
-                                            <input type="datetime-local" name="delivery_date" min="{{date('m.d.Y', strtotime(time()))}}" class="form-control" required>
+                                            <input type="date" name="delivery_date" min="{{date('m.d.Y', strtotime(time()))}}" class="form-control" required>
                                                                                         
                                         </div>
                                     <br><br>
@@ -77,6 +77,39 @@
                         Готовые
                     </button>
                 </a>
+            </div>
+            <div>
+            
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#orderParam">
+            Запустить модальное окно
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="orderParam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('order.paramSearch') }}" method="post" >
+                            @csrf
+                                <h5>От</h5>
+                                <input type="date" class="form-control" name="min_date" required>
+                                <h5>До</h5>
+                                <input type="date" class="form-control" name="max_date" required>
+                                <br>
+                                <button  type="submit" class="btn btn-primary">Отправить</button> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             </div>
         </div>
     </div><hr>
@@ -115,7 +148,7 @@
                                         @foreach($shoppers as  $shopper )
                                         <option>{{$shopper->name}}</option>
                                         @endforeach</select>
-                        
+                        <br>
                         <button type="submit">Отправить</button>
 
                         </form>

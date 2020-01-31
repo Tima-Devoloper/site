@@ -42,6 +42,7 @@ Route::group(
         })->name('admin.index');
 
         Route::get('order/ready','orderController@indexReady')->name('order.indexReady');
+        Route::post('order/paramSearch','orderController@paramSearch')->name('order.paramSearch');
 
         Route::resource('shopper','shopperController');
 

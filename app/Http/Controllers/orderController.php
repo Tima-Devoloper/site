@@ -12,7 +12,7 @@ class orderController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function index()
     {
         $orders = Order::where('status', Order::STATUS_ACTIVE)->orderBy('delivery_date', 'asc')->get();
@@ -114,7 +114,8 @@ class orderController extends Controller
         ]);
         $order = Order::where('shopper_id',$shopperId->id)->where('free',Order::STATUS_ACTIVE )->where('delivery_date', $request->delivery_date)->where('status',Order::STATUS_ACTIVE)->first();
 
-
+        
+        
         return view('shopper.tools.subOrder.create',[
             'request'  => $request,
             'position' => PositionName::all(),
@@ -199,5 +200,42 @@ class orderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function paramSearch(Request $request){
+        
+        // Зопрашиваем позиции подходящие под параметры
+        $orders  = \App\Order::where('delivery_date','>=' , $request->min_date )
+        ->where('delivery_date' , '<=' , $request->max_date)
+        ->get();
+
+        // Создаём массив для всех видов бауырсаков
+        $fingers = [];
+
+        $positions = \App\PositionName::all();
+
+        foreach($positions as $position){
+            
+            $fingers[$position->id] = 0;
+        
+        };
+        
+        foreach($orders as $order){
+            
+            $subOrders = \App\SubOrder::where('order_number',$order->id)->get();
+
+            foreach($subOrders as $subOrder ){
+                
+                    $fingers[$subOrder->position_id] +=  $subOrder->number;
+            };
+
+        };
+
+
+        return view('admin.tools.order.paramSearch',[
+            'fingers'   => $fingers,
+            'positions' => $positions,
+            'request'   => $request,
+        ]);
     }
 }
