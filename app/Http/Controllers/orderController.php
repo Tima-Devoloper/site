@@ -207,6 +207,7 @@ class orderController extends Controller
         // Зопрашиваем позиции подходящие под параметры
         $orders  = \App\Order::where('delivery_date','>=' , $request->min_date )
         ->where('delivery_date' , '<=' , $request->max_date)
+        ->where('shopper_id',$request->shopper_name)
         ->get();
 
         // Создаём массив для всех видов бауырсаков

@@ -102,6 +102,11 @@
                                 <input type="date" class="form-control" name="min_date" required>
                                 <h5>До</h5>
                                 <input type="date" class="form-control" name="max_date" required>
+                                <h5>Компании</h5>
+                                <select name="shopper_name" class="form-control" >
+                                @foreach($shoppers as  $shopper )
+                                <option value="{{$shopper->id}}" >{{$shopper->name}}</option>
+                                @endforeach</select>
                                 <br>
                                 <button  type="submit" class="btn btn-primary">Отправить</button> 
                             </form>
