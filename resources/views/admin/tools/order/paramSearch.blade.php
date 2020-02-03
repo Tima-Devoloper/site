@@ -4,7 +4,7 @@
 <div class="contaier">
     <div class="container">
         <div class="container">
-        <strong>От:{{$request->min_date}}  До: {{$request->max_date}}</strong>
+        <strong>От:{{$request->min_date}}  До: {{$request->max_date}} Компания: {{ \App\Shoppper::where('id', $request->shopper_name)->first()->name}}</strong>
         </div>
     </div>
 </div>
